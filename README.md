@@ -1,68 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Simple example of using package `amazon-cognito-identity-js` package for registration users in AWS Cognito User Pool
 
-## Available Scripts
+User Pool creation:
+[https://aws.amazon.com/blogs/mobile/accessing-your-user-pools-using-the-amazon-cognito-identity-sdk-for-javascript/](https://aws.amazon.com/blogs/mobile/accessing-your-user-pools-using-the-amazon-cognito-identity-sdk-for-javascript/)
+[https://youtu.be/TowcW1aTDqE?t=1429](https://youtu.be/TowcW1aTDqE?t=1429)
 
-In the project directory, you can run:
+Installation step:
+`$npm i amazon-cognito-identity-js --save`
+`$npm i react-hook-form --save`
 
-### `yarn start`
+.env file contains next env variables:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```nodejs
+REACT_APP_Pool_Id=
+REACT_APP_App_client_Id=
+REACT_APP_Identity_pool_Id=
+REACT_APP_Region=us-east-1=
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Related Links:
+https://github.com/awslabs/aws-serverless-auth-reference-app
+[https://www.youtube.com/watch?v=VZqG7HjT2AQ](https://www.youtube.com/watch?v=VZqG7HjT2AQ)
+[https://www.slideshare.net/AmazonWebServices/aws-reinvent-2016-serverless-authentication-and-authorization-identity-management-for-serverless-architectures-mbl306](https://www.slideshare.net/AmazonWebServices/aws-reinvent-2016-serverless-authentication-and-authorization-identity-management-for-serverless-architectures-mbl306)
+[https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js
+https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html](https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
