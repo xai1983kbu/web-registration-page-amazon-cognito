@@ -5,6 +5,7 @@ import {
   CognitoUserAttribute,
   CognitoUser
 } from 'amazon-cognito-identity-js'
+import { Redirect } from 'react-router-dom'
 
 function doRegister (data) {
   const { email, username, password } = data
