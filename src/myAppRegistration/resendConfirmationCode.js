@@ -1,10 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
-} from 'amazon-cognito-identity-js'
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js'
 
 function doResend (data) {
   const { email } = data

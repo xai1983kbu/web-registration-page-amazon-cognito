@@ -1,10 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
-} from 'amazon-cognito-identity-js'
+import { CognitoUserPool } from 'amazon-cognito-identity-js'
 
 function doRetriveCurentUser () {
   const poolData = {
@@ -52,7 +48,7 @@ function doRetriveCurentUser () {
 }
 
 function GetCurrentUserFromLocalStorage () {
-  const { register, handleSubmit, errors } = useForm()
+  const { handleSubmit } = useForm()
   const onSubmit = data => {
     doRetriveCurentUser()
   }

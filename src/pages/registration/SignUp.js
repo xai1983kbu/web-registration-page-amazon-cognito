@@ -13,8 +13,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { useForm, Controller, ErrorMessage } from 'react-hook-form'
 import {
   CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
+  CognitoUserAttribute
 } from 'amazon-cognito-identity-js'
 import { useHistory } from 'react-router-dom'
 import Countdown from 'react-countdown'
@@ -85,7 +84,6 @@ async function doRegister (data) {
 export default function SignUp () {
   const {
     errors,
-    register,
     handleSubmit,
     control,
     setError,
@@ -156,11 +154,19 @@ export default function SignUp () {
                 variant='outlined'
               />
             }
-            // onChange={() => triggerValidation('password')}
             control={control}
             name='email'
             defaultValue=''
+            rules={{
+              required: 'This is required.',
+              // https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression
+              pattern: {
+                value: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
+                message: 'Must contain valid email address!'
+              }
+            }}
           />
+          <ErrorMessage errors={errors} name='email' />
           <Box component='div' m={1} defaultValue='' />
           <Controller
             as={

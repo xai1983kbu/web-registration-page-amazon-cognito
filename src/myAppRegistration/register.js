@@ -2,10 +2,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import {
   CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
+  CognitoUserAttribute
 } from 'amazon-cognito-identity-js'
-import { Redirect } from 'react-router-dom'
 
 function doRegister (data) {
   const { email, username, password } = data
