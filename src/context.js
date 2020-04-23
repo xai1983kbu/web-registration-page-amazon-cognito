@@ -1,8 +1,7 @@
 import { createContext } from 'react'
 
 const Context = createContext({
-  currentUser: null,
-  credentials: null
+  currentUser: null
 })
 
 export default Context

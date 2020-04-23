@@ -10,8 +10,12 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "amazon-cognito-identity-js": "^4.2.1",
+    "aws-appsync": "^3.0.3",
+    "aws-appsync-react": "^3.0.3",
     "aws-sdk": "^2.658.0",
+    "graphql-tag": "^2.10.3",
     "react": "^16.13.1",
+    "react-apollo": "^2.5.8",
     "react-countdown": "^2.2.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^5.4.2",
@@ -28,7 +32,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

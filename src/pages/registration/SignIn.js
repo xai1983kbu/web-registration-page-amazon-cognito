@@ -29,8 +29,9 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
   return new Promise((resolve, reject) => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result) {
-        dispatch({ type: 'LOGIN_USER', payload: { currentUser: cognitoUser } })
         const accessToken = result.getAccessToken().getJwtToken()
+
+        // console.log(accessToken)
 
         //POTENTIAL: Region needs to be set if not already set previously elsewhere.
         AWS.config.region = process.env.REACT_APP_Region
@@ -45,6 +46,14 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
           }
         })
 
+        // move it down if you need be logged in only after getting credentials from CognitoIdentity
+        dispatch({
+          type: 'LOGIN_USER',
+          payload: {
+            currentUser: cognitoUser
+          }
+        })
+
         // https://forums.aws.amazon.com/thread.jspa?threadID=243850
         AWS.config.credentials.clearCachedId()
         //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
@@ -52,6 +61,7 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
           if (error) {
             // console.error(error)
             reject({ error: error })
+            return
           } else {
             // Instantiate aws sdk service objects now that the credentials have been updated.
             // example: var s3 = new AWS.S3();

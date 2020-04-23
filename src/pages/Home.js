@@ -3,7 +3,6 @@ import Context from '../context'
 
 export default function Home () {
   const { state } = useContext(Context)
-  // console.log(state.currentUser)
 
   return (
     <>

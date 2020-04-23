@@ -28,7 +28,10 @@ export default function SignOut () {
       const signoutResult = await cognitoUser.signOut()
       console.log(signoutResult)
     }
-    dispatch({ type: 'LOGOUT_USER', payload: { currentUser: null } })
+    dispatch({
+      type: 'LOGOUT_USER',
+      payload: { currentUser: null, token: null }
+    })
     history.push('/home')
   }
 
