@@ -2,7 +2,7 @@ import { CognitoUserPool } from 'amazon-cognito-identity-js'
 import * as AWS from 'aws-sdk/global' // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/creating-and-calling-service-objects.html
 
 // https://stackoverflow.com/a/56010951/9783262
-export default function retriveUserFromLocalStorage (dispatch) {
+export default function retriveUserToken (dispatch) {
   // console.log('inside function retriveUserFromLocalStorage')
   return new Promise((resolve, reject) => {
     const poolData = {
@@ -17,11 +17,6 @@ export default function retriveUserFromLocalStorage (dispatch) {
       cognitoUser.getSession(function (err, session) {
         if (err) {
           // alert(err.message || JSON.stringify(err))
-          dispatch({
-            type: 'RETRIEVE_USER_FROM_LOCAL',
-            payload: { currentUser: null }
-          })
-
           reject(err)
           return
         }
@@ -51,13 +46,16 @@ export default function retriveUserFromLocalStorage (dispatch) {
 
         // Instantiate aws sdk service objects now that the credentials have been updated.
         // example: var s3 = new AWS.S3();
-
         dispatch({
           type: 'RETRIEVE_USER_FROM_LOCAL',
           payload: {
-            currentUser: cognitoUser,
-            token: session.getIdToken().getJwtToken(),
-            credentials: AWS.config.credentials
+            currentUser: cognitoUser
+          }
+        })
+        dispatch({
+          type: 'IS_LOGGED_IN',
+          payload: {
+            isAuth: true
           }
         })
         resolve(session.getIdToken().getJwtToken())
@@ -66,5 +64,11 @@ export default function retriveUserFromLocalStorage (dispatch) {
   }).catch(err => {
     console.log('Catch block - retriveUserFromLocalStorage')
     console.log(err)
+    dispatch({
+      type: 'IS_LOGGED_IN',
+      payload: {
+        isAuth: false
+      }
+    })
   })
 }

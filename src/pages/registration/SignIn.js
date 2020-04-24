@@ -53,6 +53,12 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
             currentUser: cognitoUser
           }
         })
+        dispatch({
+          type: 'IS_LOGGED_IN',
+          payload: {
+            isAuth: true
+          }
+        })
 
         // https://forums.aws.amazon.com/thread.jspa?threadID=243850
         AWS.config.credentials.clearCachedId()

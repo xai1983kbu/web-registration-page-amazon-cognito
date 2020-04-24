@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Register from './pages/Register'
 import About from './pages/About'
@@ -7,8 +7,7 @@ import AddPlace from './pages/AddPlace'
 import { useContext, useReducer } from 'react'
 import Context from './context'
 import reducer from './reducer'
-import retriveUserFromLocalStorage from './utils/retriveUser'
-import retrieveToken from './utils/retrieveToken'
+import retriveUserToken from './utils/currentUser'
 
 // https://github.com/awslabs/aws-mobile-appsync-sdk-js
 import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync'
@@ -16,27 +15,40 @@ import AppSyncConfig from './aws-exports'
 import { ApolloProvider } from 'react-apollo' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/456
 // import { Rehydrated } from 'aws-appsync-react' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/115
 import * as AWS from 'aws-sdk/global'
+import ProtectedRoute from './ProtectedRoute'
 
-const client = new AWSAppSyncClient({
-  url: AppSyncConfig.graphqlEndpoint,
-  region: AppSyncConfig.region,
-  auth: {
-    type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-    // apiKey: AppSyncConfig.apiKey
-    jwtToken: async () => await retrieveToken()
-  },
-  // credentials: state.credentials
+const getClient = dispatch =>
+  new AWSAppSyncClient({
+    url: AppSyncConfig.graphqlEndpoint,
+    region: AppSyncConfig.region,
+    auth: {
+      type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+      // apiKey: AppSyncConfig.apiKey
+      jwtToken: async () => await retriveUserToken(dispatch)
+    },
+    // credentials: state.credentials
 
-  disableOffline: true
-})
+    disableOffline: true
+  })
+
+let client
 
 export default function App () {
   const initialState = useContext(Context)
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  let token
+  // Creating client which recieve dispatch.
+  // Simulation willMount life cycle method in fybctional component
+  // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks
+  const willMount = useRef(true)
+  if (willMount.current) {
+    // console.log('This runs only once before rendering the component.')
+    willMount.current = false
+    client = getClient(dispatch)
+  }
+
   useEffect(() => {
-    retriveUserFromLocalStorage(dispatch)
+    retriveUserToken(dispatch)
   }, [])
 
   return (
@@ -61,18 +73,12 @@ export default function App () {
 
           <Context.Provider value={{ state, dispatch }}>
             <Switch>
-              <Route path='/about'>
-                <About />
-              </Route>
+              <ProtectedRoute path='/about' component={About} />
               <Route path='/register'>
                 <Register />
               </Route>
-              <Route path='/addplace'>
-                <AddPlace />
-              </Route>
-              <Route path='/'>
-                <Home />
-              </Route>
+              <ProtectedRoute path='/addplace' component={AddPlace} />
+              <ProtectedRoute path='/' component={Home} />
             </Switch>
           </Context.Provider>
         </div>

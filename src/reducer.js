@@ -15,6 +15,11 @@ export default function (state, action) {
         ...state,
         currentUser: null
       }
+    case 'IS_LOGGED_IN':
+      return {
+        ...state,
+        isAuth: action.payload.isAuth
+      }
     default:
       return state
   }
