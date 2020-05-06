@@ -38,7 +38,7 @@ export default function App () {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   // Creating client which recieve dispatch.
-  // Simulation willMount life cycle method in fybctional component
+  // Simulation willMount life cycle method in functional component
   // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks
   const willMount = useRef(true)
   if (willMount.current) {

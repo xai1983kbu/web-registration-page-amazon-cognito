@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   TextField,
@@ -17,6 +17,7 @@ import {
 } from 'amazon-cognito-identity-js'
 import { useHistory } from 'react-router-dom'
 import Countdown from 'react-countdown'
+import { useWindowSize } from '../../utils/hooks'
 
 function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
@@ -87,13 +88,22 @@ export default function SignUp () {
     handleSubmit,
     control,
     setError,
-    triggerValidation
+    triggerValidation,
+    formState
   } = useForm({ mode: 'onChange' }) //	Validation will trigger on the change event with each input, and lead to multiple re-renders. Warning: this often comes with a significant impact on performances.
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState(false)
   const [successMessage, setSuccessMessage] = useState(false)
   let history = useHistory()
+  const buttonRef = useRef(null)
+  // https://stackoverflow.com/questions/19014250/rerender-view-on-browser-resize-with-react
+  const [width, height] = useWindowSize()
+  // The hook below is for scrolling Registration Form up when keyboard will appear and overlap it
+  useEffect(() => {
+    window.scrollTo(0, buttonRef.current.offsetTop)
+    console.log(width, height, formState)
+  }, [width, height, formState])
 
   const onSubmit = async data => {
     setIsSubmitting(true)
@@ -255,6 +265,7 @@ export default function SignUp () {
             variant='contained'
             color='primary'
             disabled={isSubmitting}
+            ref={buttonRef}
           >
             SignUp
           </Button>

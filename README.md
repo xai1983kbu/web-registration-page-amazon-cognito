@@ -23,3 +23,7 @@ https://github.com/awslabs/aws-serverless-auth-reference-app
 [https://www.slideshare.net/AmazonWebServices/aws-reinvent-2016-serverless-authentication-and-authorization-identity-management-for-serverless-architectures-mbl306](https://www.slideshare.net/AmazonWebServices/aws-reinvent-2016-serverless-authentication-and-authorization-identity-management-for-serverless-architectures-mbl306)
 [https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js
 https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html](https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
+
+[How to make React app preview on mobile?](https://stackoverflow.com/a/55231285/9783262)
+For windows:
+Find your public IP using ipconfig in cmd. Find IPv4 address under Wireless LAN adapter Wi-Fi. Make sure your phone and pc are in the same LAN (connect to the same Wifi). Use http://your_ip:3000 to preview your react app.
