@@ -1,6 +1,7 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import { Query, Mutation } from 'react-apollo'
+import Header from '../components/ui/Header'
 
 // https://github.com/awslabs/aws-mobile-appsync-sdk-js
 const GET_POST = gql`
@@ -27,6 +28,8 @@ const ADD_PLACE = gql`
 export default function AddPlace () {
   return (
     <div>
+      <Header />
+      <div style={{ marginTop: '80px' }} />
       <Query query={GET_POST}>
         {({ data, loading, error }) => {
           const { singlePost } = data

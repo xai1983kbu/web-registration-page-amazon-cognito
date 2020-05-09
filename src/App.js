@@ -56,7 +56,7 @@ export default function App () {
       {/* <Rehydrated> */}
       <Router>
         <div>
-          <ul>
+          {/* <ul>
             <li>
               <Link to='/'>Home</Link>
             </li>
@@ -69,16 +69,16 @@ export default function App () {
             <li>
               <Link to='/register'>Register</Link>
             </li>
-          </ul>
+          </ul> */}
 
           <Context.Provider value={{ state, dispatch }}>
             <Switch>
-              <ProtectedRoute path='/about' component={About} />
+              <Route path='/about' component={About} />
               <Route path='/register'>
                 <Register />
               </Route>
               <ProtectedRoute path='/addplace' component={AddPlace} />
-              <ProtectedRoute path='/' component={Home} />
+              <Route path='/' component={Home} />
             </Switch>
           </Context.Provider>
         </div>

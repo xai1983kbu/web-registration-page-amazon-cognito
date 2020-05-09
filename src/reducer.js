@@ -13,7 +13,8 @@ export default function (state, action) {
     case 'LOGOUT_USER':
       return {
         ...state,
-        currentUser: null
+        currentUser: null,
+        isAuth: action.payload.isAuth
       }
     case 'IS_LOGGED_IN':
       return {

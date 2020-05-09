@@ -6,8 +6,11 @@ import {
   Container,
   CssBaseline,
   Snackbar,
-  CircularProgress
+  CircularProgress,
+  Grid,
+  Link as MuiLink
 } from '@material-ui/core'
+
 import MuiAlert from '@material-ui/lab/Alert'
 import { useForm, Controller, ErrorMessage } from 'react-hook-form'
 import {
@@ -269,6 +272,19 @@ export default function SignIn () {
           >
             SignIn
           </Button>
+          <Box component='div' m={1} defaultValue='' />
+          <Grid container>
+            <Grid item xs>
+              <MuiLink href='/register/forgot' variant='body2'>
+                Forgot password?
+              </MuiLink>
+            </Grid>
+            <Grid item>
+              <MuiLink href='/register/signup' variant='body2'>
+                {"Don't have an account? Sign Up"}
+              </MuiLink>
+            </Grid>
+          </Grid>
         </form>
       </Container>
     </React.Fragment>

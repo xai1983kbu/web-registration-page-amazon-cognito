@@ -5,8 +5,11 @@ import SignUp from './registration/SignUp'
 import Confirm from './registration/Confirm'
 import ResendCode from './registration/ResendCode'
 import SignOut from './registration/SignOut'
+import ResetPassword from './registration/ResetPassword'
+import ForgotPassword from './registration/ForgotPassword'
 import Context from './../context'
 import { Typography } from '@material-ui/core'
+import Header from '../components/ui/Header'
 
 export default function Register () {
   let match = useRouteMatch()
@@ -14,6 +17,8 @@ export default function Register () {
 
   return (
     <div>
+      <Header />
+      <div style={{ marginTop: '40px' }} />
       <Typography variant='h5' component='h2'>
         Register
       </Typography>
@@ -26,6 +31,12 @@ export default function Register () {
             </li>
             <li>
               <Link to={`${match.url}/signin`}>SignIn</Link>
+            </li>
+            <li>
+              <Link to={`${match.url}/forgotpassword`}>Forgot Password</Link>
+            </li>
+            <li>
+              <Link to={`${match.url}/resetpassword`}>Reset Password</Link>
             </li>
             <li>
               <Link to={`${match.url}/confirm`}>Confirm</Link>
@@ -48,6 +59,12 @@ export default function Register () {
         </Route>
         <Route path={`${match.url}/signin`}>
           <SignIn />
+        </Route>
+        <Route path={`${match.url}/forgotpassword`}>
+          <ForgotPassword />
+        </Route>
+        <Route path={`${match.url}/resetpassword`}>
+          <ResetPassword />
         </Route>
         <Route path={`${match.url}/signout`}>
           <SignOut />

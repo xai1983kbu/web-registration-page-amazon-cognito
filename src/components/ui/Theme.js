@@ -4,7 +4,15 @@ import green from '@material-ui/core/colors/green'
 
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
+    primary: blue,
     secondary: green
+  },
+  typography: {
+    tab: {
+      fontFamily: 'Relway',
+      textTransform: 'none',
+      fontWeight: 700,
+      fontSize: '1rem'
+    }
   }
 })

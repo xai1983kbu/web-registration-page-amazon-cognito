@@ -30,7 +30,7 @@ export default function SignOut () {
     }
     dispatch({
       type: 'LOGOUT_USER',
-      payload: { currentUser: null, token: null }
+      payload: { currentUser: null, token: null, isAuth: false }
     })
     history.push('/home')
   }
