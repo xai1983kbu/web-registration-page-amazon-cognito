@@ -16,6 +16,8 @@ import { ApolloProvider } from 'react-apollo' // https://github.com/awslabs/aws-
 // import { Rehydrated } from 'aws-appsync-react' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/115
 import * as AWS from 'aws-sdk/global'
 import ProtectedRoute from './ProtectedRoute'
+import { ThemeProvider } from '@material-ui/styles'
+import theme from './components/ui/Theme'
 
 const getClient = dispatch =>
   new AWSAppSyncClient({
@@ -54,9 +56,10 @@ export default function App () {
   return (
     <ApolloProvider client={client}>
       {/* <Rehydrated> */}
-      <Router>
-        <div>
-          {/* <ul>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div>
+            {/* <ul>
             <li>
               <Link to='/'>Home</Link>
             </li>
@@ -71,18 +74,19 @@ export default function App () {
             </li>
           </ul> */}
 
-          <Context.Provider value={{ state, dispatch }}>
-            <Switch>
-              <Route path='/about' component={About} />
-              <Route path='/register'>
-                <Register />
-              </Route>
-              <ProtectedRoute path='/addplace' component={AddPlace} />
-              <Route path='/' component={Home} />
-            </Switch>
-          </Context.Provider>
-        </div>
-      </Router>
+            <Context.Provider value={{ state, dispatch }}>
+              <Switch>
+                <Route path='/about' component={About} />
+                <Route path='/register'>
+                  <Register />
+                </Route>
+                <ProtectedRoute path='/addplace' component={AddPlace} />
+                <Route path='/' component={Home} />
+              </Switch>
+            </Context.Provider>
+          </div>
+        </Router>
+      </ThemeProvider>
       {/* </Rehydrated> */}
     </ApolloProvider>
   )

@@ -29,7 +29,6 @@ export default function AddPlace () {
   return (
     <div>
       <Header />
-      <div style={{ marginTop: '80px' }} />
       <Query query={GET_POST}>
         {({ data, loading, error }) => {
           const { singlePost } = data

@@ -6,7 +6,8 @@ import {
   Container,
   CssBaseline,
   Snackbar,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { useForm, Controller, ErrorMessage } from 'react-hook-form'
@@ -113,6 +114,10 @@ export default function Confirm () {
           )}
         </Snackbar>
         {isSubmitting && <CircularProgress />}
+
+        <Typography variant='h6' component='h2'>
+          Confirm Email
+        </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             as={

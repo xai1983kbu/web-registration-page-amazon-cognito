@@ -85,9 +85,6 @@ export default function Confirm () {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Typography variant='h4' component='h2'>
-        Resend Confirmation Code
-      </Typography>
       <Container maxWidth='xs' style={{ textAlign: 'center' }}>
         <Snackbar
           open={open}
@@ -114,7 +111,10 @@ export default function Confirm () {
             </Alert>
           )}
         </Snackbar>
-        {isSubmitting && <CircularProgress />}
+        {isSubmitting && <CircularProgress />};
+        <Typography variant='h6' component='h2'>
+          Resend Confirmation Code
+        </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             as={

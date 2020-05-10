@@ -18,7 +18,6 @@ export default function Register () {
   return (
     <div>
       <Header />
-      <div style={{ marginTop: '40px' }} />
       <Typography variant='h5' component='h2'>
         Register
       </Typography>

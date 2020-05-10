@@ -8,7 +8,8 @@ import {
   Snackbar,
   CircularProgress,
   Grid,
-  Link as MuiLink
+  Link as MuiLink,
+  Typography
 } from '@material-ui/core'
 
 import MuiAlert from '@material-ui/lab/Alert'
@@ -181,6 +182,10 @@ export default function SignIn () {
           )}
         </Snackbar>
         {isSubmitting && <CircularProgress />}
+        <Typography variant='h6' component='h2'>
+          Sign in with your username and password
+        </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             as={
@@ -275,7 +280,7 @@ export default function SignIn () {
           <Box component='div' m={1} defaultValue='' />
           <Grid container>
             <Grid item xs>
-              <MuiLink href='/register/forgot' variant='body2'>
+              <MuiLink href='/register/forgotpassword' variant='body2'>
                 Forgot password?
               </MuiLink>
             </Grid>
