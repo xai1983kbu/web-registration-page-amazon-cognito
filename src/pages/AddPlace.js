@@ -2,6 +2,7 @@ import React from 'react'
 import gql from 'graphql-tag'
 import { Query, Mutation } from 'react-apollo'
 import Header from '../components/ui/Header'
+import Map from '../components/Map'
 
 // https://github.com/awslabs/aws-mobile-appsync-sdk-js
 const GET_POST = gql`
@@ -29,7 +30,9 @@ export default function AddPlace () {
   return (
     <div>
       <Header />
-      <Query query={GET_POST}>
+      <Map />
+
+      {/* <Query query={GET_POST}>
         {({ data, loading, error }) => {
           const { singlePost } = data
           return (
@@ -42,7 +45,8 @@ export default function AddPlace () {
             </div>
           )
         }}
-      </Query>
+      </Query> */}
+      {/*       
       <Mutation mutation={ADD_PLACE}>
         {(addPlace, { data, loading, error }) => {
           // const { addPlace } = data
@@ -69,11 +73,9 @@ export default function AddPlace () {
               {loading && <p>Loading...</p>}
               {error && <p>Error :( Please try again</p>}
               {console.log('data=', data)}
-              {/* {addPlace && `${addPlace.latitude} ${addPlace}`} */}
             </div>
           )
-        }}
-      </Mutation>
+        }}</Mutation> */}
     </div>
   )
 }

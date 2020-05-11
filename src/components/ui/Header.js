@@ -6,7 +6,6 @@ import {
   Toolbar,
   Tabs,
   Tab,
-  Paper,
   MenuItem,
   useMediaQuery,
   useTheme,
@@ -48,9 +47,9 @@ function ElevationScroll (props) {
 const useStyles = makeStyles(theme => ({
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '3em',
+    marginBottom: '0.4em',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '2em'
+      marginBottom: '0.6em'
     },
     [theme.breakpoints.down('xs')]: {
       marginBottom: '1.25em'
@@ -113,7 +112,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Header () {
+export default function Header ({ isMapPage }) {
   const classes = useStyles()
   const theme = useTheme()
   const mediaMatches = useMediaQuery(theme.breakpoints.down('md'))
@@ -154,7 +153,7 @@ export default function Header () {
       const tabInt = parseInt(tabIndexString[0])
       setValue(tabInt)
     }
-  }, location.path)
+  }, [location.pathname])
 
   const tabs = (
     <>
@@ -212,7 +211,6 @@ export default function Header () {
                 handleSMenuItemClick(event, index)
                 setValue(1)
                 handleSMenuClose()
-                console.log(route)
               }}
               selected={index === selectedSMenuIndex && value === 1}
               component={Link}

@@ -77,10 +77,9 @@ export default function App () {
             <Context.Provider value={{ state, dispatch }}>
               <Switch>
                 <Route path='/about' component={About} />
-                <Route path='/register'>
-                  <Register />
-                </Route>
-                <ProtectedRoute path='/addplace' component={AddPlace} />
+                <Route path='/register' component={Register} />
+                <Route path='/addplace' component={AddPlace} />
+                {/* <ProtectedRoute path='/addplace' component={AddPlace} /> */}
                 <Route path='/' component={Home} />
               </Switch>
             </Context.Provider>
