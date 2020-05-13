@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import NoContent from '../components/Pin/NoContent'
-// import PinContent from '../components/Pin/PinContent'
+import PinContent from '../components/Pin/PinContent'
 import CreatePin from '../components/Pin/CreatePin'
 import { Paper, makeStyles } from '@material-ui/core'
 

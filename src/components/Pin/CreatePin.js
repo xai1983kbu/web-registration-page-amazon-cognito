@@ -13,6 +13,8 @@ import SaveIcon from '@material-ui/icons/Save'
 import S3 from 'aws-sdk/clients/s3'
 
 import Context from '../../context'
+import { ADD_PLACE } from '../../graphql/mutations'
+import { Mutation } from 'react-apollo'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -140,6 +142,7 @@ export default function CreatePin () {
   }
 
   const classes = useStyles()
+
   return (
     <form className={classes.form}>
       {!submitting && imgSrcBase64 && (
@@ -208,17 +211,39 @@ export default function CreatePin () {
           <ClearIcon className={classes.leftIcon} />
           Discard
         </Button>
-        <Button
-          type='submit'
-          className={classes.button}
-          variant='contained'
-          color='secondary'
-          disabled={!title.trim() || !image || !content.trim() || submitting}
-          onClick={handleSubmit}
-        >
-          Submit
-          <SaveIcon className={classes.rightIcon} />
-        </Button>
+        <Mutation mutation={ADD_PLACE}>
+          {(addPlace, { data, loading, error }) => {
+            return (
+              <Button
+                type='submit'
+                className={classes.button}
+                variant='contained'
+                color='secondary'
+                disabled={
+                  !title.trim() || !image || !content.trim() || submitting
+                }
+                onClick={event => {
+                  handleSubmit(event)
+                  // Mutation addPlace
+                  addPlace({
+                    variables: {
+                      placeInput: {
+                        latitude: 35,
+                        longitude: 48,
+                        address: 'Novokrymska 6, Dnipro',
+                        name: title,
+                        phone: '097-37-66-706'
+                      }
+                    }
+                  })
+                }}
+              >
+                Submit
+                <SaveIcon className={classes.rightIcon} />
+              </Button>
+            )
+          }}
+        </Mutation>
       </div>
     </form>
   )
