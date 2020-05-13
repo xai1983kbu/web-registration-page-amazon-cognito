@@ -15,6 +15,7 @@ import S3 from 'aws-sdk/clients/s3'
 import Context from '../../context'
 import { ADD_PLACE } from '../../graphql/mutations'
 import { Mutation } from 'react-apollo'
+import { useMutation } from 'react-apollo-hooks'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -63,6 +64,7 @@ export default function CreatePin () {
   const [content, setContent] = useState('')
   const [imgSrcBase64, setImgSrcBase64] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [addPlace, { loading }] = useMutation(ADD_PLACE)
 
   const handleDeleteDraft = event => {
     setTitle('')
@@ -121,7 +123,7 @@ export default function CreatePin () {
           // console.log('Successfully uploaded photo.')
           const imgInBucket = await getImageFromBucket()
           // console.log(data)
-          resolve(imgInBucket.data.Body.toString('base64'))
+          resolve([data, imgInBucket.data.Body.toString('base64')])
         }
       )
     )
@@ -133,8 +135,24 @@ export default function CreatePin () {
     try {
       event.preventDefault()
       setSubmitting(true)
-      const uploadedImage = await handleImageUpload()
+      // upload image
+      const [dataFromS3, uploadedImage] = await handleImageUpload()
+      // console.log(dataFromS3)
       setImgSrcBase64(uploadedImage)
+
+      // Mutation addPlace
+      addPlace({
+        variables: {
+          placeInput: {
+            latitude: 35,
+            longitude: 48,
+            address: 'Bucket' in dataFromS3 ? dataFromS3['Bucket'] : '',
+            name: title,
+            phone: '097-37-66-706'
+          }
+        }
+      })
+
       setSubmitting(false)
     } catch (err) {
       setSubmitting(false)
@@ -152,7 +170,7 @@ export default function CreatePin () {
           style={{ maxWidth: 300, maxHeight: 300 }}
         />
       )}
-      {submitting && <CircularProgress />}
+      {(submitting || loading) && <CircularProgress />}
       <Typography
         className={classes.alignCenter}
         component='h2'
@@ -211,39 +229,19 @@ export default function CreatePin () {
           <ClearIcon className={classes.leftIcon} />
           Discard
         </Button>
-        <Mutation mutation={ADD_PLACE}>
-          {(addPlace, { data, loading, error }) => {
-            return (
-              <Button
-                type='submit'
-                className={classes.button}
-                variant='contained'
-                color='secondary'
-                disabled={
-                  !title.trim() || !image || !content.trim() || submitting
-                }
-                onClick={event => {
-                  handleSubmit(event)
-                  // Mutation addPlace
-                  addPlace({
-                    variables: {
-                      placeInput: {
-                        latitude: 35,
-                        longitude: 48,
-                        address: 'Novokrymska 6, Dnipro',
-                        name: title,
-                        phone: '097-37-66-706'
-                      }
-                    }
-                  })
-                }}
-              >
-                Submit
-                <SaveIcon className={classes.rightIcon} />
-              </Button>
-            )
-          }}
-        </Mutation>
+        <Button
+          type='submit'
+          className={classes.button}
+          variant='contained'
+          color='secondary'
+          disabled={
+            !title.trim() || !image || !content.trim() || submitting || loading
+          }
+          onClick={handleSubmit}
+        >
+          Submit
+          <SaveIcon className={classes.rightIcon} />
+        </Button>
       </div>
     </form>
   )

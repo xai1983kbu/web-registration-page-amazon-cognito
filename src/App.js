@@ -14,6 +14,7 @@ import retriveUserToken from './utils/currentUser'
 import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync'
 import AppSyncConfig from './aws-exports'
 import { ApolloProvider } from 'react-apollo' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/456
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks' // https://www.gravitywell.co.uk/insights/react-apollo-and-react-hooks-a-match-made-in-heaven/
 // import { Rehydrated } from 'aws-appsync-react' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/115
 // import * as AWS from 'aws-sdk/global'
 import ProtectedRoute from './ProtectedRoute'
@@ -53,11 +54,12 @@ export default function App () {
 
   return (
     <ApolloProvider client={client}>
-      {/* <Rehydrated> */}
-      <ThemeProvider theme={theme}>
-        <Router>
-          <div>
-            {/* <ul>
+      <ApolloHooksProvider client={client}>
+        {/* <Rehydrated> */}
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div>
+              {/* <ul>
             <li>
               <Link to='/'>Home</Link>
             </li>
@@ -72,19 +74,20 @@ export default function App () {
             </li>
           </ul> */}
 
-            <Context.Provider value={{ state, dispatch }}>
-              <Switch>
-                <Route path='/about' component={About} />
-                <Route path='/register' component={Register} />
-                <Route path='/addplace' component={AddPlace} />
-                <ProtectedRoute path='/searchplace' component={SearchPlace} />
-                <Route path='/' component={Home} />
-              </Switch>
-            </Context.Provider>
-          </div>
-        </Router>
-      </ThemeProvider>
-      {/* </Rehydrated> */}
+              <Context.Provider value={{ state, dispatch }}>
+                <Switch>
+                  <Route path='/about' component={About} />
+                  <Route path='/register' component={Register} />
+                  <Route path='/addplace' component={AddPlace} />
+                  <ProtectedRoute path='/searchplace' component={SearchPlace} />
+                  <Route path='/' component={Home} />
+                </Switch>
+              </Context.Provider>
+            </div>
+          </Router>
+        </ThemeProvider>
+        {/* </Rehydrated> */}
+      </ApolloHooksProvider>
     </ApolloProvider>
   )
 }
