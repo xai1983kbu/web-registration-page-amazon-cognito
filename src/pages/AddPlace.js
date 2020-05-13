@@ -1,36 +1,49 @@
 import React from 'react'
-import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
+// import gql from 'graphql-tag'
+// import { Query, Mutation } from 'react-apollo'
+import { makeStyles } from '@material-ui/core'
+
 import Header from '../components/ui/Header'
 import Map from '../components/Map'
+import Blog from '../components/Blog'
 
 // https://github.com/awslabs/aws-mobile-appsync-sdk-js
-const GET_POST = gql`
-  {
-    singlePost(id: 1) {
-      id
-      title
-    }
-  }
-`
+// const GET_POST = gql`
+//   {
+//     singlePost(id: 1) {
+//       id
+//       title
+//     }
+//   }
+// `
 
-const ADD_PLACE = gql`
-  mutation AddPlace($placeInput: PlaceInput) {
-    addPlace(place: $placeInput) {
-      latitude
-      longitude
-      address
-      name
-      phone
-    }
-  }
-`
+// const ADD_PLACE = gql`
+//   mutation AddPlace($placeInput: PlaceInput) {
+//     addPlace(place: $placeInput) {
+//       latitude
+//       longitude
+//       address
+//       name
+//       phone
+//     }
+//   }
+// `
+
+const useStyles = makeStyles(theme => ({
+  root: {}
+}))
 
 export default function AddPlace () {
+  const classes = useStyles()
   return (
-    <div>
+    <div className={classes.root}>
       <Header />
-      <Map />
+      <Map>
+        <Blog />
+      </Map>
+
+      {/* Blog Area to add Pin Content */}
+      {/* <Blog /> */}
 
       {/* <Query query={GET_POST}>
         {({ data, loading, error }) => {

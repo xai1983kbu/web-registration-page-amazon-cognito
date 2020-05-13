@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
 
-import { Button, Typography, makeStyles } from '@material-ui/core'
-import { DeleteIcon } from '@material-ui/icons'
+import {
+  // Button,
+  // Typography,
+  makeStyles
+} from '@material-ui/core'
+// import { DeleteIcon } from '@material-ui/icons'
 import PinIcon from '../components/PinIcon'
-import Blog from '../components/Blog'
 import Context from '../context'
+import { useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,15 +29,22 @@ const INITIAL_VIEWPORT = {
   zoom: 13
 }
 
-export default function Map () {
+export default function Map ({ children }) {
   const classes = useStyles()
   const { state, dispatch } = useContext(Context)
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
+  let location = useLocation()
 
   useEffect(() => {
     getUserPosition()
   }, [])
+
+  useEffect(() => {
+    dispatch({
+      type: 'DELETE_DRAFT'
+    })
+  }, [location])
 
   const getUserPosition = () => {
     if ('geolocation' in navigator) {
@@ -103,7 +114,7 @@ export default function Map () {
       </ReactMapGL>
 
       {/* Blog Area to add Pin Content */}
-      <Blog />
+      {children}
     </div>
   )
 }

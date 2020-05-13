@@ -14,6 +14,7 @@ import Header from '../components/ui/Header'
 export default function Register () {
   let match = useRouteMatch()
   const { state } = useContext(Context)
+  console.log(state.isAuth)
 
   return (
     <div>
@@ -23,7 +24,7 @@ export default function Register () {
       </Typography>
 
       <ul>
-        {!state.currentUser && (
+        {!state.isAuth && (
           <>
             <li>
               <Link to={`${match.url}/signup`}>SignUp</Link>
@@ -45,7 +46,7 @@ export default function Register () {
             </li>
           </>
         )}
-        {state.currentUser && (
+        {state.isAuth && (
           <li>
             <Link to={`${match.url}/signout`}>SignOut</Link>
           </li>

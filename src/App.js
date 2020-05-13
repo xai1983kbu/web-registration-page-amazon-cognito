@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import React, { useRef } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Register from './pages/Register'
 import About from './pages/About'
 import Home from './pages/Home'
 import AddPlace from './pages/AddPlace'
+import SearchPlace from './pages/SearchPlace'
 import { useContext, useReducer } from 'react'
 import Context from './context'
 import reducer from './reducer'
@@ -14,7 +15,7 @@ import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync'
 import AppSyncConfig from './aws-exports'
 import { ApolloProvider } from 'react-apollo' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/456
 // import { Rehydrated } from 'aws-appsync-react' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/115
-import * as AWS from 'aws-sdk/global'
+// import * as AWS from 'aws-sdk/global'
 import ProtectedRoute from './ProtectedRoute'
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/ui/Theme'
@@ -46,12 +47,9 @@ export default function App () {
   if (willMount.current) {
     // console.log('This runs only once before rendering the component.')
     willMount.current = false
+    retriveUserToken(dispatch)
     client = getClient(dispatch)
   }
-
-  useEffect(() => {
-    retriveUserToken(dispatch)
-  }, [])
 
   return (
     <ApolloProvider client={client}>
@@ -79,7 +77,7 @@ export default function App () {
                 <Route path='/about' component={About} />
                 <Route path='/register' component={Register} />
                 <Route path='/addplace' component={AddPlace} />
-                {/* <ProtectedRoute path='/addplace' component={AddPlace} /> */}
+                <ProtectedRoute path='/searchplace' component={SearchPlace} />
                 <Route path='/' component={Home} />
               </Switch>
             </Context.Provider>

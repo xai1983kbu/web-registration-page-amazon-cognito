@@ -1,22 +1,26 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import {
   Button,
   Container,
   CssBaseline,
-  Snackbar,
-  CircularProgress,
+  // Snackbar,
+  // CircularProgress,
   Typography
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import { useForm, Controller, ErrorMessage } from 'react-hook-form'
+import {
+  useForm
+  // Controller,
+  // ErrorMessage
+} from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
-import Countdown from 'react-countdown'
+// import Countdown from 'react-countdown'
 import Context from '../../context'
 import { CognitoUser } from 'amazon-cognito-identity-js'
 
-function Alert (props) {
-  return <MuiAlert elevation={6} variant='filled' {...props} />
-}
+// function Alert (props) {
+//   return <MuiAlert elevation={6} variant='filled' {...props} />
+// }
 
 export default function SignOut () {
   const { state, dispatch } = useContext(Context)

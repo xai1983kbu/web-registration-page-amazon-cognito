@@ -22,6 +22,7 @@ import {
 import { useHistory } from 'react-router-dom'
 import Countdown from 'react-countdown'
 import * as AWS from 'aws-sdk/global' // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/creating-and-calling-service-objects.html
+
 import Context from '../../context'
 
 function Alert (props) {
@@ -33,7 +34,7 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
   return new Promise((resolve, reject) => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result) {
-        const accessToken = result.getAccessToken().getJwtToken()
+        // const accessToken = result.getAccessToken().getJwtToken()
 
         // console.log(accessToken)
 
@@ -47,6 +48,12 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
             [`cognito-idp.${process.env.REACT_APP_Region}.amazonaws.com/${process.env.REACT_APP_Pool_Id}`]: result
               .getIdToken()
               .getJwtToken()
+          }
+        })
+        dispatch({
+          type: 'GET_CREDENTIALS',
+          payload: {
+            identity_creds: AWS.config.credentials
           }
         })
 
@@ -69,13 +76,39 @@ function loginUser (cognitoUser, authenticationDetails, dispatch) {
         //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
         AWS.config.credentials.refresh(error => {
           if (error) {
+            dispatch({
+              type: 'GET_CREDENTIALS',
+              payload: {
+                identity_creds: null
+              }
+            })
             // console.error(error)
             reject({ error: error })
             return
           } else {
             // Instantiate aws sdk service objects now that the credentials have been updated.
-            // example: var s3 = new AWS.S3();
-            console.log('Successfully logged!')
+            // const s3 = new S3({
+            // apiVersion: '2006-03-01',
+            // params: { Bucket: 'start-app--land-geo-pins' },
+            // region: 'eu-west-3',
+            // credentials: AWS.config.credentials
+            // })
+            // const request = s3.getObject({
+            // Key: 'logo192.png'
+            // })
+            // request
+            // .on('success', function (response) {
+            // console.log(response)
+            // })
+            // .send()
+
+            dispatch({
+              type: 'GET_CREDENTIALS',
+              payload: {
+                identity_creds: AWS.config.credentials
+              }
+            })
+
             resolve({ success: 'Successfully logged! (refresh token)' })
           }
         })
@@ -124,11 +157,11 @@ export default function SignIn () {
 
   const {
     errors,
-    register,
+    // register,
     handleSubmit,
     control,
-    setError,
-    triggerValidation
+    setError
+    // triggerValidation
   } = useForm({ mode: 'onChange' }) //	Validation will trigger on the change event with each input, and lead to multiple re-renders. Warning: this often comes with a significant impact on performances.
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)

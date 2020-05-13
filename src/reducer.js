@@ -10,6 +10,11 @@ export default function (state, action) {
         ...state,
         currentUser: action.payload.currentUser
       }
+    case 'GET_CREDENTIALS':
+      return {
+        ...state,
+        identity_creds: action.payload.identity_creds
+      }
     case 'LOGOUT_USER':
       return {
         ...state,

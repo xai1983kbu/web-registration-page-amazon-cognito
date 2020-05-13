@@ -31,8 +31,13 @@ const siteRoutes = {
     name: 'Add new place'
   },
   3: {
-    link: '/register',
+    link: '/searchplace',
     index: '3',
+    name: 'Search places'
+  },
+  4: {
+    link: '/register',
+    index: '4',
     name: 'Register'
   }
 }

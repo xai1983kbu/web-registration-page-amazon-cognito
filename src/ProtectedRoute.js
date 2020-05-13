@@ -4,6 +4,7 @@ import Context from './context'
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const { state } = useContext(Context)
+  console.log('inside protected Route')
   return (
     <Route
       render={props =>

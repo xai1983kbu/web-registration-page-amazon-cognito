@@ -153,7 +153,7 @@ export default function Header ({ isMapPage }) {
       const tabInt = parseInt(tabIndexString[0])
       setValue(tabInt)
     }
-  }, [location.pathname])
+  }, [location.pathname, match])
 
   const tabs = (
     <>
@@ -164,7 +164,7 @@ export default function Header ({ isMapPage }) {
         indicatorColor='primary'
       >
         {Object.keys(routes).map((key, index) => {
-          const isnum = /^\d+$/.test(key)
+          // const isnum = /^\d+$/.test(key)
           const mainRoute = routes[key]
           const ariaOwns =
             '0' in mainRoute ? mainRoute['0']['ariaOwns'] : undefined
@@ -238,7 +238,7 @@ export default function Header ({ isMapPage }) {
         <div className={classes.toolbarMargin} />
         <List disablePadding>
           {Object.keys(routes).map((key, index) => {
-            const isnum = /^\d+$/.test(key)
+            // const isnum = /^\d+$/.test(key)
             const mainRoute = routes[key]
             return (
               <ListItem

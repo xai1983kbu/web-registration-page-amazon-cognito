@@ -33,7 +33,7 @@ export default function NoContent () {
         color='textPrimary'
         gutterBottom
       >
-        Click on the map to add pin
+        Click on the map to add Center
       </Typography>
     </div>
   )

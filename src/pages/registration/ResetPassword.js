@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   TextField,
   Box,
@@ -14,13 +14,13 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { useForm, Controller, ErrorMessage } from 'react-hook-form'
 import {
   CognitoUserPool,
-  AuthenticationDetails,
+  // AuthenticationDetails,
   CognitoUser
 } from 'amazon-cognito-identity-js'
 import { useHistory, useLocation } from 'react-router-dom'
 import Countdown from 'react-countdown'
-import * as AWS from 'aws-sdk/global' // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/creating-and-calling-service-objects.html
-import Context from '../../context'
+// import * as AWS from 'aws-sdk/global' // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/creating-and-calling-service-objects.html
+// import Context from '../../context'
 
 function Alert (props) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
@@ -71,11 +71,11 @@ export default function ResetPassword () {
   // const { dispatch } = useContext(Context)
   const {
     errors,
-    register,
+    // register,
     handleSubmit,
     control,
     setError,
-    triggerValidation,
+    // triggerValidation,
     watch
   } = useForm({ mode: 'onChange' }) //	Validation will trigger on the change event with each input, and lead to multiple re-renders. Warning: this often comes with a significant impact on performances.
   const [open, setOpen] = useState(false)
