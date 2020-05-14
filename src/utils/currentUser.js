@@ -77,3 +77,31 @@ export default function retriveUserToken (dispatch) {
     })
   })
 }
+
+export function retriveJwtToken (dispatch) {
+  console.log('inside function retriveJwtToken')
+  return new Promise((resolve, reject) => {
+    const poolData = {
+      UserPoolId: process.env.REACT_APP_Pool_Id,
+      ClientId: process.env.REACT_APP_App_client_Id
+    }
+    const userPool = new CognitoUserPool(poolData)
+
+    const cognitoUser = userPool.getCurrentUser()
+
+    if (cognitoUser != null) {
+      cognitoUser.getSession(function (err, session) {
+        if (err) {
+          // alert(err.message || JSON.stringify(err))
+          reject(err)
+          return
+        }
+        console.log('session validity: ' + session.isValid())
+        resolve(session.getIdToken().getJwtToken())
+      })
+    }
+  }).catch(err => {
+    console.log('Catch block - retriveJwtToken')
+    console.log(err)
+  })
+}

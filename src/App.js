@@ -8,33 +8,39 @@ import SearchPlace from './pages/SearchPlace'
 import { useContext, useReducer } from 'react'
 import Context from './context'
 import reducer from './reducer'
-import retriveUserToken from './utils/currentUser'
+import retriveUserToken, { retriveJwtToken } from './utils/currentUser'
 
 // https://github.com/awslabs/aws-mobile-appsync-sdk-js
-import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync'
+import { AUTH_TYPE, createAppSyncLink } from 'aws-appsync'
 import AppSyncConfig from './aws-exports'
+
+import { ApolloClient } from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/456
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks' // https://www.gravitywell.co.uk/insights/react-apollo-and-react-hooks-a-match-made-in-heaven/
+import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks'
+// import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks' // https://www.gravitywell.co.uk/insights/react-apollo-and-react-hooks-a-match-made-in-heaven/
 // import { Rehydrated } from 'aws-appsync-react' // https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/115
 // import * as AWS from 'aws-sdk/global'
 import ProtectedRoute from './ProtectedRoute'
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/ui/Theme'
 
-const getClient = dispatch =>
-  new AWSAppSyncClient({
+const httpLink = new HttpLink({
+  uri: AppSyncConfig.graphqlEndpoint
+})
+
+const getAwsLink = () =>
+  createAppSyncLink({
     url: AppSyncConfig.graphqlEndpoint,
     region: AppSyncConfig.region,
     auth: {
       type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-      // apiKey: AppSyncConfig.apiKey
-      jwtToken: async () => await retriveUserToken(dispatch)
-    },
-    // credentials: state.credentials
-
-    disableOffline: true
+      jwtToken: async () => await retriveJwtToken()
+    }
   })
 
+// https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/450#issuecomment-529521768
 let client
 
 export default function App () {
@@ -49,7 +55,11 @@ export default function App () {
     // console.log('This runs only once before rendering the component.')
     willMount.current = false
     retriveUserToken(dispatch)
-    client = getClient(dispatch)
+    const awsLink = getAwsLink()
+    client = new ApolloClient({
+      link: awsLink.concat(httpLink),
+      cache: new InMemoryCache()
+    })
   }
 
   return (

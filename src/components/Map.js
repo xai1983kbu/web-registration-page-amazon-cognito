@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl'
+import ReactMapGL, {
+  NavigationControl,
+  Marker,
+  ScaleControl
+} from 'react-map-gl'
+import { SEARCH_PLACES_IN_R5000 } from '../graphql/query'
+// import { useQuery } from 'react-apollo-hooks'
+import { useQuery } from '@apollo/react-hooks'
 
 import {
   // Button,
@@ -20,6 +27,12 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     left: 0,
     margin: '1em'
+  },
+  scaleControl: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: '1em'
   }
 }))
 
@@ -35,6 +48,20 @@ export default function Map ({ children }) {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
   let location = useLocation()
+  const { data, loading, error, refetch } = useQuery(SEARCH_PLACES_IN_R5000, {
+    variables: {
+      pointInput: {
+        latitude: viewport.latitude,
+        longitude: viewport.longitude
+      },
+      suspend: false
+    }
+  })
+
+  useEffect(() => {
+    refetch()
+    console.log(data)
+  }, [data])
 
   useEffect(() => {
     getUserPosition()
@@ -86,6 +113,9 @@ export default function Map ({ children }) {
           <NavigationControl
             onViewportChange={newViewport => setViewport(newViewport)}
           />
+        </div>
+        <div className={classes.scaleControl}>
+          <ScaleControl />
         </div>
 
         {/* Pin for User's Current Position */}

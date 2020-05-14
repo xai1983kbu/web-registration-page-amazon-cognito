@@ -14,8 +14,8 @@ import S3 from 'aws-sdk/clients/s3'
 
 import Context from '../../context'
 import { ADD_PLACE } from '../../graphql/mutations'
-import { Mutation } from 'react-apollo'
-import { useMutation } from 'react-apollo-hooks'
+// import { useMutation } from 'react-apollo-hooks'
+import { useMutation } from '@apollo/react-hooks'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -144,8 +144,8 @@ export default function CreatePin () {
       addPlace({
         variables: {
           placeInput: {
-            latitude: 35,
-            longitude: 48,
+            latitude: 48.57307,
+            longitude: 32.31873,
             address: 'Bucket' in dataFromS3 ? dataFromS3['Bucket'] : '',
             name: title,
             phone: '097-37-66-706'
