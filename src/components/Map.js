@@ -6,12 +6,13 @@ import ReactMapGL, {
 } from 'react-map-gl'
 import { SEARCH_PLACES_IN_R5000 } from '../graphql/query'
 // import { useQuery } from 'react-apollo-hooks'
-import { useQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/react-hooks'
 
 import {
   // Button,
   // Typography,
-  makeStyles
+  makeStyles,
+  Button
 } from '@material-ui/core'
 // import { DeleteIcon } from '@material-ui/icons'
 import PinIcon from '../components/PinIcon'
@@ -48,18 +49,19 @@ export default function Map ({ children }) {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
   let location = useLocation()
-  const { data, loading, error, refetch } = useQuery(SEARCH_PLACES_IN_R5000, {
-    variables: {
-      pointInput: {
-        latitude: viewport.latitude,
-        longitude: viewport.longitude
-      },
-      suspend: false
-    }
-  })
+  const [searchPlacesInR5000, { data, loading, error }] = useLazyQuery(
+    SEARCH_PLACES_IN_R5000
+    // {
+    //   variables: {
+    //     pointInput: {
+    //       latitude: viewport.latitude,
+    //       longitude: viewport.longitude
+    //     }
+    //   }
+    // }
+  )
 
   useEffect(() => {
-    refetch()
     console.log(data)
   }, [data])
 
@@ -107,6 +109,7 @@ export default function Map ({ children }) {
         onViewportChange={newViewport => setViewport(newViewport)}
         {...viewport}
         onClick={handleMapClick}
+        dragPan
       >
         {/* Navigation Control */}
         <div className={classes.navigationControl}>
@@ -142,6 +145,20 @@ export default function Map ({ children }) {
           </Marker>
         )}
       </ReactMapGL>
+      <Button
+        onClick={() =>
+          searchPlacesInR5000({
+            variables: {
+              pointInput: {
+                latitude: viewport.latitude,
+                longitude: viewport.longitude
+              }
+            }
+          })
+        }
+      >
+        R E F R R E S H
+      </Button>
 
       {/* Blog Area to add Pin Content */}
       {children}
