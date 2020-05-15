@@ -6,7 +6,7 @@ import ReactMapGL, {
 } from 'react-map-gl'
 import { SEARCH_PLACES_IN_R5000 } from '../graphql/query'
 // import { useQuery } from 'react-apollo-hooks'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery, useApolloClient } from '@apollo/react-hooks'
 
 import {
   // Button,
@@ -49,21 +49,26 @@ export default function Map ({ children }) {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT)
   const [userPosition, setUserPosition] = useState(null)
   let location = useLocation()
-  const [searchPlacesInR5000, { data, loading, error }] = useLazyQuery(
-    SEARCH_PLACES_IN_R5000
-    // {
-    //   variables: {
-    //     pointInput: {
-    //       latitude: viewport.latitude,
-    //       longitude: viewport.longitude
-    //     }
-    //   }
-    // }
-  )
+  // const [searchPlacesInR5000, { called, loading, data }] = useLazyQuery(
+  // SEARCH_PLACES_IN_R5000
+  // {
+  //   variables: {
+  //     pointInput: {
+  //       latitude: viewport.latitude,
+  //       longitude: viewport.longitude
+  //     }
+  //   }
+  // }
+  // )
+  const client = useApolloClient()
 
   useEffect(() => {
-    console.log(data)
-  }, [data])
+    if (userPosition !== null) getPins()
+  }, [userPosition])
+
+  // useEffect(() => {
+  //   console.log(called, loading, data)
+  // }, [loading])
 
   useEffect(() => {
     getUserPosition()
@@ -74,6 +79,20 @@ export default function Map ({ children }) {
       type: 'DELETE_DRAFT'
     })
   }, [location])
+
+  const getPins = async () => {
+    const { data } = await client.query({
+      query: SEARCH_PLACES_IN_R5000,
+      variables: {
+        pointInput: {
+          latitude: viewport.latitude,
+          longitude: viewport.longitude
+        }
+      }
+    })
+    if ('queryRadius' in data)
+      dispatch({ type: 'GET_PINS', payload: data['queryRadius'] })
+  }
 
   const getUserPosition = () => {
     if ('geolocation' in navigator) {
@@ -144,21 +163,20 @@ export default function Map ({ children }) {
             <PinIcon size={40} color='hotpink' />
           </Marker>
         )}
+
+        {/* Created Pins */}
+        {state.pins.map(pin => (
+          <Marker
+            key={`${pin.latitude}${pin.longitude}`}
+            latitude={pin.latitude}
+            longitude={pin.longitude}
+            offsetLeft={-19} // -19px
+            offsetTop={-37} // -37px
+          >
+            <PinIcon size={40} color='darkblue' />
+          </Marker>
+        ))}
       </ReactMapGL>
-      <Button
-        onClick={() =>
-          searchPlacesInR5000({
-            variables: {
-              pointInput: {
-                latitude: viewport.latitude,
-                longitude: viewport.longitude
-              }
-            }
-          })
-        }
-      >
-        R E F R R E S H
-      </Button>
 
       {/* Blog Area to add Pin Content */}
       {children}

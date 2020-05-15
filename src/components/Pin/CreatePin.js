@@ -15,7 +15,7 @@ import S3 from 'aws-sdk/clients/s3'
 import Context from '../../context'
 import { ADD_PLACE } from '../../graphql/mutations'
 // import { useMutation } from 'react-apollo-hooks'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useApolloClient } from '@apollo/react-hooks'
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -64,7 +64,8 @@ export default function CreatePin () {
   const [content, setContent] = useState('')
   const [imgSrcBase64, setImgSrcBase64] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [addPlace, { loading }] = useMutation(ADD_PLACE)
+  // const [addPlace, { loading }] = useMutation(ADD_PLACE)
+  const client = useApolloClient()
 
   const handleDeleteDraft = event => {
     setTitle('')
@@ -141,18 +142,36 @@ export default function CreatePin () {
       setImgSrcBase64(uploadedImage)
 
       // Mutation addPlace
-      addPlace({
-        variables: {
-          placeInput: {
-            latitude: 48.57307,
-            longitude: 32.31873,
-            address: 'Bucket' in dataFromS3 ? dataFromS3['Bucket'] : '',
-            name: title,
-            phone: '097-37-66-706'
-          }
-        }
+      const placeInput = {
+        latitude: state.draft.latitude,
+        longitude: state.draft.longitude,
+        title: title,
+        content: content,
+        image: {
+          bucket: dataFromS3.Bucket,
+          region: process.env.REACT_APP_Bucket_region,
+          key: dataFromS3.Key
+        },
+        userId: state.currentUser
+          ? state.currentUser.username
+          : 'UnAthenticated'
+      }
+      // console.log(placeInput)
+      // addPlace({
+      //   variables: {
+      //     placeInput
+      //   }
+      // })
+      const { data } = await client.mutate({
+        mutation: ADD_PLACE,
+        variables: { placeInput }
       })
 
+      dispatch({
+        type: 'CREATE_PIN',
+        payload: 'addPlace' in data ? data.addPlace : null
+      })
+      handleDeleteDraft()
       setSubmitting(false)
     } catch (err) {
       setSubmitting(false)
@@ -170,7 +189,7 @@ export default function CreatePin () {
           style={{ maxWidth: 300, maxHeight: 300 }}
         />
       )}
-      {(submitting || loading) && <CircularProgress />}
+      {submitting && <CircularProgress />}
       <Typography
         className={classes.alignCenter}
         component='h2'
@@ -234,9 +253,7 @@ export default function CreatePin () {
           className={classes.button}
           variant='contained'
           color='secondary'
-          disabled={
-            !title.trim() || !image || !content.trim() || submitting || loading
-          }
+          disabled={!title.trim() || !image || !content.trim() || submitting}
           onClick={handleSubmit}
         >
           Submit

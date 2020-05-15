@@ -5,10 +5,15 @@ export const SEARCH_PLACES_IN_R5000 = gql`
   query search($pointInput: PointInput) {
     queryRadius(radius: 5000, centerPoint: $pointInput) {
       latitude
-      latitude
-      name
-      address
-      phone
+      longitude
+      title
+      content
+      image {
+        bucket
+        region
+        key
+      }
+      userId
     }
   }
 `

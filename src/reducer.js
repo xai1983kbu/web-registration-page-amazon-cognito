@@ -44,6 +44,18 @@ export default function (state, action) {
         ...state,
         draft: null
       }
+    case 'GET_PINS':
+      return {
+        ...state,
+        pins: action.payload
+      }
+    case 'CREATE_PIN':
+      const newPin = action.payload
+      const prevPins = state.pins
+      return {
+        ...state,
+        pins: newPin ? [...prevPins, newPin] : [...prevPins]
+      }
     default:
       return state
   }

@@ -6,9 +6,14 @@ export const ADD_PLACE = gql`
     addPlace(place: $placeInput) {
       latitude
       longitude
-      address
-      name
-      phone
+      title
+      content
+      image {
+        bucket
+        region
+        key
+      }
+      userId
     }
   }
 `
